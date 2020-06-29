@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Currency conversion with Currency Exchange API">
+  <meta name="author" content="Emre JILTA">
+
+  <title>Currency Converter</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Fontawesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/scrolling-nav.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">Currency Converter</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#"><i class="fab fa-github fa-2x"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <div class="mx-auto">
+
+          <form method="get" id="currencyForm">
+
+            <div class="form-inline align-items-center">
+              <div class="col ">
+                <label for="from">
+                  <select id="from" class="form-control form-control-lg" name="from">
+                    <option selected>Select</option>
+                  </select>
+                </label>
+                <div class="invalid"></div>
+              </div>
+
+              <div class="col ">
+                <label for="to">
+                  <select id="to" class="form-control form-control-lg" name="to">
+                    <option selected>Select</option>
+                  </select>
+                </label>
+                <div class="invalid"></div>
+              </div>
+
+              <div class="col-xs-2">
+                <label class="sr-only" for="q">Value</label>
+                <input type="text" class="form-control form-control-lg" id="q" placeholder="Value" name="q">
+                <div class="invalidValue"></div>
+              </div>
+
+              <div class="col">
+                <button type="submit" class="btn btn-primary btn-lg">Calculate</button>
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mx-auto">
+          <div class="col">
+            <p class="align-items-center mt-4 p-4 h1 text-secondary" id="result">
+              Hello
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
+
+
+  <!-- Custom JavaScript for this theme -->
+  <script src="js/scrolling-nav.js"></script>
+
+  <script>
+
+    $.getJSON("currencies.json", function (data) {
+      let selectFrom = $("#from");
+      let selectTo = $("#to");
+      $.each(data, function (key, val) {
+        selectFrom.append("<option value='" + key + "'>" + key + "</option>");
+        selectTo.append("<option value='" + key + "'>" + key + "</option>");
+      });
+    });
+
+
+
+    $("#currencyForm").submit(function (e) {
+      e.preventDefault();
+
+      let from = $("#from");
+      let to = $("#to");
+      let q = $("#q");
+
+      $.ajax({
+        async: true,
+        crossDomain: true,
+        url: "https://currency-exchange.p.rapidapi.com/exchange",
+        method: "GET",
+        headers: {
+          "x-rapidapi-host": "currency-exchange.p.rapidapi.com",
+          "x-rapidapi-key": "cab62429admshd68d0311be7a634p162e63jsn73885c3e6e81"
+        },
+        dataType: "json",
+        data: {from: from.val(), to: to.val()},
+        success: function (result) {
+          $("#result").text(q.val() + " " + from.val() + " = " + result * q.val() + " " + to.val());
+        }
+      });
+
+    });
+
+    /*$("#currencyForm").validate({
+      rules:{
+        from: {required: true},
+        to: {required: true},
+        q: {
+          required: true,
+          number: true}
+      },
+      messages:{
+        from: "Invalid",
+        to: "Invalid",
+        q: {
+          required: "Invalid",
+          number: "Must be a number"}
+      },
+      submitHandler: function(form) {
+        $.ajax({
+          async: true,
+          crossDomain: true,
+          url: "https://currency-exchange.p.rapidapi.com/exchange?q=1&from=eur&to=try",
+          method: "GET",
+          headers: {
+            "x-rapidapi-host": "currency-exchange.p.rapidapi.com",
+            "x-rapidapi-key": "cab62429admshd68d0311be7a634p162e63jsn73885c3e6e81"
+          },
+          //data: {q: q, from: from, to: to},
+          success: function (response) {
+            $("#result").text(response);
+          },
+          error: function (response) {
+            $("#result").attr("class","text-red").text(response);
+          }
+        });
+        form.submit();
+      }
+    });*/
+
+  </script>
+
+</body>
+
+</html>

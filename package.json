@@ -1,0 +1,22 @@
+{
+    "title": "Currency Converter",
+    "name": "currency-converter",
+    "version": "1.0",
+    "description": "Currency conversion with Currency Exchange API",
+    "keywords": [
+        "currency",
+        "exchange",
+        "api"
+    ],
+    "license": "MIT",
+    "author": "Emre JILTA",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/emrejilta/CurrencyConverter.git"
+    },
+    "dependencies": {
+        "bootstrap": "4.5.0",
+        "jquery": "3.5.1",
+        "jquery.easing": "^1.4.1"
+    }
+}
